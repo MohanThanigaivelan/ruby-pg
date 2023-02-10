@@ -2102,10 +2102,12 @@ pgconn_sync_get_result(VALUE self)
 	if(result == NULL)
 		return Qnil;
 	rb_pgresult = pg_new_result(result, self);
+	
 	if (rb_block_given_p()) {
 		return rb_ensure(rb_yield, rb_pgresult,
 			pg_result_clear, rb_pgresult);
 	}
+	pg_result_check(rb_pgresult);
 	return rb_pgresult;
 }
 
